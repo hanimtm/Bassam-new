@@ -8,7 +8,7 @@
               <field name="arch" type="xml">
                 <tree create="false" edit="false">
                     <field name="name"/>
-                	<field name="property_id"/>
+                    <field name="property_id"/>
                     <field name="inv_pay_source" string="Invoice Reference"/>
                     <field name="payment_origin" string="Payment Reference"/>
                     <field name="user_id"/>

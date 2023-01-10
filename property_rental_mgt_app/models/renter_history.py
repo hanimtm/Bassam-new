@@ -7,7 +7,7 @@ class RentPayerHistory(models.Model):
     _name = 'renter.history'
     _description = "Renter History"
 
-    renter_id = fields.Many2one('res.users', string="Renter")
+    renter_id = fields.Many2one('res.partner', string="Renter")
     date = fields.Date("Current Date")
     from_date = fields.Date()
     to_date = fields.Date()
@@ -21,6 +21,7 @@ class RentPayerHistory(models.Model):
     deposite = fields.Float()
     contract_month = fields.Integer("Contract Month")
     contract_id = fields.Many2one('contract.details','Contract')
+    salesperson_id = fields.Many2one('res.users', string="Salesperson",default=lambda self: self.env.user)
 
 
     def create_rent_invoice(self):
@@ -39,8 +40,8 @@ class RentPayerHistory(models.Model):
             'property_id':self.property_id.id,
             'move_type': 'out_invoice',
             'invoice_origin':self.property_id.name,
-            'partner_id': self.owner_id.id,
-            'invoice_user_id':self.renter_id.id or self.property_id.salesperson_id.id,
+            'partner_id': self.renter_id.id,
+            'invoice_user_id':self.salesperson_id.id or self.property_id.salesperson_id.id,
             'invoice_line_ids': [(0,0,{
                 'name':self.property_id.name,
                 'product_id':self.property_id.id,

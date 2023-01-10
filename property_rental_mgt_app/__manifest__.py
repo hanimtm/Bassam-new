@@ -2,9 +2,9 @@
 
 {
     'name' : 'Property Sale, Lease and Rental Management App',
-    'author': "DiGiNT",
-    'version' : '15.0.1.0',
-    'live_test_url':'',
+    'author': "Edge Technologies",
+    'version' : '15.0.1.2',
+    'live_test_url':'https://youtu.be/qp0V-bN-Poo',
     "images":['static/description/main_screenshot.png'],
     'summary' : 'Apps for Sale Property Management Rent Property Management Real Estate Property Management real estate lease management property lease management property booking property rental property rental invoice housing rental housing lease house rental',
     'description': "Sale & Rent Property Management ,Create contract , renew contract, allow partial payment for sale property and invoice due date auto generate between one month interval, Maintain Property Maintenance, user commission calculate at register payment time base on property, automatically generate commission worksheet at last of day of the month. view and print contract expired report, property analysis report.",
@@ -20,6 +20,7 @@
         'views/contract_details.xml',
         'views/renew_contract.xml',
         'views/commission.xml',
+        'views/building_view.xml',
         'views/property_product.xml',
         'views/property_partners.xml',
         'report/contract_template.xml',

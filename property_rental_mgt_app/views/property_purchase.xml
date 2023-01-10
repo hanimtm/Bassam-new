@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record model="ir.ui.view" id="property_buy_wizard">
-              <field name="name">property.buy.form</field>
-              <field name="model">property.buy</field>
-              <field name="arch" type="xml">
+            <field name="name">property.buy.form</field>
+            <field name="model">property.buy</field>
+            <field name="arch" type="xml">
                 <form>
-                  <header>
+                    <header>
                         <field name="state" widget="statusbar" statusbar_visible="avl,sold"/>
-                  </header>
+                    </header>
                     <sheet>
                         <group string="Sale Property Information">
                             <group>
@@ -30,7 +29,7 @@
                         </footer>                        
                     </sheet>
                 </form>
-             </field>
+            </field>
         </record>
 
     </data>

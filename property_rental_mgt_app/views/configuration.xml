@@ -196,5 +196,34 @@
         </field>
     </record>
 
+    <record model="ir.ui.view" id="building_type_form">
+        <field name="name">building.type.form</field>
+        <field name="model">building.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                <div class="oe_title">
+                    <label for="name" string="Building Type"/>
+                    <h1>
+                        <field name="name" placeholder="e.g. Commercial" class="oe_inline" required="1"/>
+                    </h1>
+                </div>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_building_type">
+        <field name="name">Building Type</field>
+        <field name="res_model">building.type</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Building type.
+            </p>
+        </field>
+    </record>
+
     </data>
 </odoo>

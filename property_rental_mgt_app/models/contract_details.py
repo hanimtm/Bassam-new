@@ -36,7 +36,7 @@ class ContractDetails(models.Model):
     from_date = fields.Date("Start Date", required=True)
     to_date = fields.Date("Expired Date", required=True)
     property_id = fields.Many2one('product.product', required=True, domain=[('is_property','=',True),('property_book_for','=','rent'),('state','!=','reserve')])
-    partner_id = fields.Many2one('res.users', string="Renter", required=True)
+    partner_id = fields.Many2one('res.partner', string="Property Renter", required=True)
     renewal_date = fields.Date("Renewal Date")
     owner_id = fields.Many2one('res.partner', string="Owner", required=True)
     rent_price = fields.Float(readonly=True)
@@ -58,8 +58,8 @@ class ContractDetails(models.Model):
 
     def expired_contract_remainder(self):
         today_date = datetime.today().date()
-        expired_contract = self.search([('to_date','<=',today_date)])
-        new_contract = self.search([('from_date','<=',today_date),('to_date','>',today_date),('state','=','new')])
+        expired_contract = self.env['contract.details'].search([('to_date','<=',today_date)])
+        new_contract = self.env['contract.details'].search([('from_date','<=',today_date),('to_date','>',today_date),('state','=','new')])
         for rec in new_contract:
             rec.write({'state':'running'})
         for record in expired_contract:

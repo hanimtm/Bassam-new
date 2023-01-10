@@ -8,6 +8,7 @@ from dateutil import relativedelta
 class ProductProduct(models.Model):
 	_inherit = 'product.product'
 
+	building_id = fields.Many2one('property.building', 'Building', track_visibility="onchange")
 	invoice_count = fields.Integer("#Invoice", compute='_compute_invoice_count')
 	contract_count = fields.Integer("#Contract", compute='_compute_contract_count')
 	maintain_count =  fields.Integer("#Maintain", compute='_compute_maintanance')
@@ -16,6 +17,12 @@ class ProductProduct(models.Model):
 	maintain_charge = fields.Float("Maintenance Charge")
 	reasonable_price = fields.Boolean("Allow Discount(%)")
 	owner_id = fields.Many2one('res.partner', string="Property Owner")
+	renter_id = fields.Many2one('res.partner', string="Property Renter")
+	purchaser_id = fields.Many2one('res.partner', string="Property Purchaser")
+
+	renter_rel_id = fields.Many2one(related='renter_id', string="Property Renter")
+	purchaser_rel_id = fields.Many2one(related='purchaser_id', string="Property Purchaser")
+
 	user_id = fields.Many2one('res.users', string="Login User")
 	salesperson_id = fields.Many2one('res.users', string="Salesperson",default=lambda self: self.env.user)
 	facility_ids = fields.Many2many('property.facility', string="Facility & Services")
@@ -184,10 +191,10 @@ class ProductProduct(models.Model):
 				'target' : 'new',
 				'context' : {
 							'property_id' : self.id,
-							'desc' : self.description,
+							'desc' : self.more_details,
 							'property_price':property_price,
 							'owner_id':self.owner_id.id,
-							'purchaser_id':self.env.user.partner_id.id,
+							'purchaser_id':self.purchaser_id.id,
 							 },
 			}
 		return buy_property_data
@@ -214,9 +221,9 @@ class ProductProduct(models.Model):
 				'target' : 'new',
 				'context' : {
 							'property_id' :self.id,
-							'desc' : self.description,
+							'desc' : self.more_details,
 							'rent_price':self.rent_price,
-							'renter_id':self.user_id.id or self.env.user.id,
+							'renter_id':self.renter_id.id,
 							'owner_id':self.owner_id.id,
 							'deposite':self.deposite,
 							 },

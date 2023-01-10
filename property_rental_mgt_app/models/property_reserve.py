@@ -13,8 +13,8 @@ class PropertyBook(models.TransientModel):
     property_id = fields.Many2one('product.product', required=True, domain=[('is_property','=',True)])
     desc = fields.Text()
     rent_price = fields.Float()
-    renter_id = fields.Many2one('res.users','Renter')
-    owner_id = fields.Many2one('res.partner')
+    owner_id = fields.Many2one('res.partner', string="Property Owner")
+    renter_id = fields.Many2one('res.partner', string="Property Renter")
     deposite = fields.Float(string="Monthly Rent", required=True)
     from_date = fields.Date(string="From Date", required=True)
     to_date = fields.Date(string="Expired Date", required=True, help="Default expired date automatically set for one month after start date. ")
@@ -32,6 +32,11 @@ class PropertyBook(models.TransientModel):
                 self.contract_month = self.contract_id.month
             if self.contract_id.contract_type == 'yearly':
                 self.contract_month = self.contract_id.year * 12
+            if self.contract_id.contract_type == 'by_date':
+                self.from_date = self.contract_id.start_date
+                self.to_date = self.contract_id.end_date
+                self.contract_month = self.contract_id.month
+
             self.deposite_amount = self.contract_month * self.deposite
             self.total_deposite = self.deposite_amount
             self.month = self.contract_month
@@ -39,19 +44,22 @@ class PropertyBook(models.TransientModel):
 
     @api.onchange('from_date','contract_id')
     def check_contract_date(self):
-        if self.from_date and self.property_id:
-            if self.from_date < date.today() or self.property_id.property_avl_from > self.from_date:
-                return {
-                        'warning': {'title': 'Warning!', 'message': 'Please enter valid contract start date...!'},
-                        'value': {'from_date': None}
-                        }
+        if self.contract_id and self.from_date:
+            if self.contract_id.contract_type == 'monthly':
+                self.to_date = self.from_date + relativedelta(months=self.contract_id.month)
+            if self.contract_id.contract_type == 'yearly':
+                self.to_date = self.from_date + relativedelta(years=self.contract_id.year)
+            if self.contract_id.contract_type == 'by_date':
+                self.from_date = self.contract_id.start_date
+                self.to_date = self.contract_id.end_date
 
-            if self.contract_id:
-                if self.contract_id.contract_type == 'monthly':
-                    self.to_date = self.from_date + relativedelta(months=self.contract_id.month)
-                if self.contract_id.contract_type == 'yearly':
-                    self.to_date = self.from_date + relativedelta(years=self.contract_id.year)
-                self.renewal_date = self.to_date
+        if self.from_date and self.to_date:
+            self.renewal_date = self.to_date
+            if self.from_date >= self.to_date:
+                raise Warning(_("Select valid contract expired date..!"))
+            if self.from_date and self.renewal_date:
+                if self.from_date > self.renewal_date:
+                    raise Warning(_("Select valid contract renewal date..!"))
 
     # get rent Property details.
     @api.model
@@ -75,7 +83,20 @@ class PropertyBook(models.TransientModel):
             state = 'running'
         else:
             state = 'new'
-        contract_id = self.env['contract.details'].create({'contract_month':self.month,'deposite':self.deposite_amount,'renewal_date':self.renewal_date,'rent_price':self.property_id.rent_price,'contract_id':self.contract_id.id,'owner_id':self.owner_id.id,'renewal_date':self.renewal_date,'partner_id':self.renter_id.id,'property_id':self.property_id.id,'date':fields.Date.today(), 'from_date':self.from_date, 'to_date':self.to_date,'state':state})
+        contract_id = self.env['contract.details'].create({
+            'contract_month':self.month,
+            'deposite':self.deposite_amount,
+            'renewal_date':self.renewal_date,
+            'rent_price':self.property_id.rent_price,
+            'contract_id':self.contract_id.id,
+            'owner_id':self.owner_id.id,
+            'renewal_date':self.renewal_date,
+            'partner_id':self.renter_id.id,
+            'property_id':self.property_id.id,
+            'date':fields.Date.today(),
+            'from_date':self.from_date,
+            'to_date':self.to_date,'state':state
+        })
         if contract_id:
             self.property_id.write({'renter_history_ids':[(0,0,{
                 'contract_month':self.month,

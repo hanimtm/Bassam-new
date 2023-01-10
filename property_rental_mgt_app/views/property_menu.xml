@@ -4,7 +4,15 @@
 
         <menuitem
             id="menu_property_root"
-            name="Rental"
+            name="Property"
+            groups="group_rent_payer,group_purchaser,group_manager"/>
+
+        <menuitem
+            id="menu_building"
+            name="Building"
+            parent="menu_property_root"
+            action="action_building"
+            sequence="1"
             groups="group_rent_payer,group_purchaser,group_manager"/>
 
         <menuitem
@@ -12,6 +20,7 @@
             name="Property"
             parent="menu_property_root"
             action="property_product_action"
+            sequence="5"
             groups="group_rent_payer,group_purchaser,group_manager"/>
 
         <menuitem
@@ -19,40 +28,29 @@
             name="Customers"
             parent="menu_property_root"
             action="property_customer_action"
+            sequence="10"
             groups="group_manager"/>
-
-        <menuitem
-            id="menu_buyer"
-            parent="menu_property_root"
-            action="property_buyer_action"
-            name="Purchaser"
-            groups="group_purchaser,group_manager"/>
-
-        <menuitem
-            id="menu_rent_payer"
-            parent="menu_property_root"
-            action="property_rent_payer_action"
-            name="Renter"
-            groups="group_rent_payer,group_manager"/>
-
 
         <menuitem
             id="menu_property_contract_details"
             name="Contracts"
             parent="menu_property_root"
             action="action_contract_details"
+            sequence="15"
             groups="property_rental_mgt_app.group_manager,property_rental_mgt_app.group_rent_payer"/>
 
         <menuitem
             id="menu_property_maintenance"
             name="Maintenance"
             parent="menu_property_root"
+            sequence="20"
             action="action_maintanance" />
 
        <!-- Commission -->
         <menuitem
             id="menu_commission"
             name="Commission"
+            sequence="25"
             parent="menu_property_root"/>
 
         <menuitem
@@ -68,12 +66,37 @@
             action="action_commission_worksheet"
             groups="group_manager"/>
             
+        <!-- Report -->
+        <menuitem
+            id="menu_property_report"
+            name="Report"
+            sequence="30"
+            parent="menu_property_root" 
+            groups="group_rent_payer,group_purchaser,group_manager"/>
+
+        <menuitem
+            id="menu_buyer"
+            parent="menu_property_root"
+            action="property_buyer_action"
+            name="Purchaser"
+            sequence="35"
+            groups="group_purchaser,group_manager"/>
+
+        <menuitem
+            id="menu_rent_payer"
+            parent="menu_property_root"
+            action="property_rent_payer_action"
+            sequence="40"
+            name="Renter"
+            groups="group_rent_payer,group_manager"/>
+
 
         <!-- Configuration -->
         <menuitem
             id="menu_property_config"
             name="Configuration"
             parent="menu_property_root"
+            sequence="100"
             groups="group_manager"/>
 
         <menuitem
@@ -100,17 +123,17 @@
             action="action_property_type"/>
 
         <menuitem
+            id="menu_building_type"
+            name="Building Type"
+            parent="menu_property_configuration"
+            action="action_building_type"/>
+
+        <menuitem
             id="menu_property_contract"
-            name="Contracts"
+            name="Contracts Type"
             parent="menu_property_configuration"
             action="action_rent_contract"/>
 
-        <!-- Report -->
-        <menuitem
-            id="menu_property_report"
-            name="Report"
-            parent="menu_property_root" 
-            groups="group_rent_payer,group_purchaser,group_manager"/>
 
         <menuitem
             id="menu_expired_contract"

@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record model="ir.ui.view" id="property_book_wizard">
-              <field name="name">property.book.form</field>
-              <field name="model">property.book</field>
-              <field name="arch" type="xml">
+            <field name="name">property.book.form</field>
+            <field name="model">property.book</field>
+            <field name="arch" type="xml">
                 <form>
-                  <header>
+                    <header>
                         <field name="state" widget="statusbar" statusbar_visible="avl,reserve"/>
-                  </header>
+                    </header>
                     <sheet>
                         <group string="Rent Property Information">
                             <group>
@@ -19,7 +18,7 @@
                                 <field name="deposite" readonly="1"/>
                                 <field name="total_deposite" readonly="1" attrs="{'invisible':[('contract_month','=',0)]}"/>
                                 <field name="deposite_amount" invisible="1"/>
-                                <field name="renter_id" readonly="1"/>
+                                <field name="renter_id" required="1"/>
                                 <field name="owner_id" readonly="1"/>
                             </group>
                             <group>
@@ -30,7 +29,7 @@
                                 <field name="month" invisible="1"/>
 
                             </group>
-                            <field name="desc" readonly="1"/>
+                            <field name="desc" placeholder="Internal notes..." readonly="1"/>
                         </group>
                         <footer>
                             <button name="create_rent_contract" type="object" string="Create Contract" icon="fa-book" class="oe_highlight" default_focus="1"/>
@@ -38,8 +37,7 @@
                         </footer>                        
                     </sheet>
                 </form>
-             </field>
+            </field>
         </record>
-
     </data>
 </odoo>

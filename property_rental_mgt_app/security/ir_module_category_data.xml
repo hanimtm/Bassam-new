@@ -48,7 +48,7 @@
             <field name="groups" eval="[(4,ref('property_rental_mgt_app.group_purchaser'))]"/>
         </record>
 
-        <!-- ir.rule for Purchaser see only saleable property, renter see only rentable property-->
+        <!-- ir.rule for Purchaser see only saleable property, renter see only rentable property and admin will have full access.-->
         <record id="property_purchaser_rule" model="ir.rule">
             <field name="name">Property Purchaser Access</field>
             <field name="model_id" ref="product.model_product_product"/>
@@ -63,12 +63,20 @@
             <field name="domain_force">['|',('state','=','rent'),'&amp;',('state','=','reserve'),('user_id','=',user.id)]</field>
         </record>
 
+        <record id="property_admin_rule" model="ir.rule">
+            <field name="name">Property Admin Access</field>
+            <field name="model_id" ref="product.model_product_product"/>
+            <field name="groups" eval="[(4, ref('base.group_erp_manager')),
+                (4,ref('property_rental_mgt_app.group_manager'))]"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+        </record>
+
         <!-- property contract rule -->
         <record id="property_contract_rule" model="ir.rule">
             <field name="name">Property Contract Access</field>
             <field name="model_id" ref="property_rental_mgt_app.model_contract_details"/>
             <field name="groups" eval="[(4, ref('property_rental_mgt_app.group_rent_payer'))]"/>
-            <field name="domain_force">[('partner_id','=',user.partner_id.id)]</field>
+            <field name="domain_force">[('partner_id','=',user.id)]</field>
         </record>
 
         <!-- Maintanance access rule for renter -->
