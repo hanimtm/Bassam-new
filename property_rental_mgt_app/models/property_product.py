@@ -8,7 +8,6 @@ from dateutil import relativedelta
 class ProductProduct(models.Model):
 	_inherit = 'product.product'
 
-	building_id = fields.Many2one('property.building', 'Building', track_visibility="onchange")
 	invoice_count = fields.Integer("#Invoice", compute='_compute_invoice_count')
 	contract_count = fields.Integer("#Contract", compute='_compute_contract_count')
 	maintain_count =  fields.Integer("#Maintain", compute='_compute_maintanance')

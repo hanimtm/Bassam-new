@@ -20,7 +20,6 @@
         'views/contract_details.xml',
         'views/renew_contract.xml',
         'views/commission.xml',
-        'views/building_view.xml',
         'views/property_product.xml',
         'views/property_partners.xml',
         'report/contract_template.xml',

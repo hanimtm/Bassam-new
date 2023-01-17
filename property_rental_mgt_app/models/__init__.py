@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from . import property_building
 from . import property_product
 from . import property_partners
 from . import configuration
