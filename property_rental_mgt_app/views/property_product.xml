@@ -142,14 +142,6 @@
 				<xpath expr="//div[hasclass('oe_title')]/h1" position="before">
 					<label class="oe_edit_only" for="name" string="Property Name" attrs="{'invisible':[('is_property','=',False)]}"/>
 				</xpath>
-				<xpath expr="//div[hasclass('oe_title')]" position="inside">
-				    <label for="building_id" string="Building Name"/>
-                    <h1>
-                        <div class="d-flex">
-                            <field class="o_text_overflow" name="building_id" placeholder="Building...."/>
-                        </div>
-                    </h1>
-                </xpath>
 
 				<xpath expr="//div[hasclass('oe_title')]" position="inside">
 				  <div name="property" groups="property_rental_mgt_app.group_manager" attrs="{'invisible':[('is_property','=',False)]}">
