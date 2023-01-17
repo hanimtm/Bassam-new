@@ -8,14 +8,6 @@
             groups="group_rent_payer,group_purchaser,group_manager"/>
 
         <menuitem
-            id="menu_building"
-            name="Building"
-            parent="menu_property_root"
-            action="action_building"
-            sequence="1"
-            groups="group_rent_payer,group_purchaser,group_manager"/>
-
-        <menuitem
             id="menu_property"
             name="Property"
             parent="menu_property_root"
