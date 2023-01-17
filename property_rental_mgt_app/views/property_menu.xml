@@ -115,12 +115,6 @@
             action="action_property_type"/>
 
         <menuitem
-            id="menu_building_type"
-            name="Building Type"
-            parent="menu_property_configuration"
-            action="action_building_type"/>
-
-        <menuitem
             id="menu_property_contract"
             name="Contracts Type"
             parent="menu_property_configuration"

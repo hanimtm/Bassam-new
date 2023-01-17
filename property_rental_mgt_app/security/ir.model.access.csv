@@ -52,4 +52,3 @@ access_journal_purchaser,account.journal.purchaser,account.model_account_journal
 access_move_line_purchaser,account.move.line.purchaser,account.model_account_move_line,property_rental_mgt_app.group_purchaser,1,0,1,0
 
 access_contract_expired,access_contract_expired,model_contract_expired,base.group_user,1,1,1,0
-property_rental_mgt_app.access_building_type,access_building_type,property_rental_mgt_app.model_building_type,base.group_user,1,1,1,1

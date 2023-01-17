@@ -30,10 +30,3 @@ class PropertyType(models.Model):
     _description = 'Property Type'
 
     name = fields.Char("Name", required=True)
-
-
-class BuildingType(models.Model):
-    _name = 'building.type'
-    _description = 'Building Type'
-
-    name = fields.Char("Name", required=True)
