@@ -16,6 +16,13 @@ class AccountAnalyticLine(models.Model):
 
     timesheet_type = fields.Selection(lambda self: _get_selections('timesheet_type'), string='Type', default='regular', required=True)
 
+    @api.model
+    def create(self, vals):
+        if 'unit_amount' in vals:
+            self.with_context(from_create=True).validate_hours_spent(vals)
+        res = super().create(vals)
+        return res
+
     def write(self, vals):
         if 'unit_amount' in vals:
             self.validate_hours_spent(vals)
@@ -24,13 +31,16 @@ class AccountAnalyticLine(models.Model):
     
     @api.model
     def validate_hours_spent(self, vals):
-        date = False
-        if self:
-            date = self.date
+        timesheet_type = False
+        if self._context.get('from_create', False):
+            timesheet_type = vals.get('timesheet_type')
+            unit_amount = vals.get('unit_amount')
         else:
-            date = vals.get('date')
-        timesheet_ids = self.env['account.analytic.line'].search([('date', '=', date),('is_timesheet', '=', True)])
-        timeshee_hor_lst = [timesheet.unit_amount for timesheet in timesheet_ids]
-        total_amount = sum(timeshee_hor_lst)
-        if total_amount > 10:
-            raise ValidationError(_("Total hours spent on '%s' can not be more than 10 hours."%(date)))
+            timesheet_type = vals.get('timesheet_type',self.timesheet_type)
+            unit_amount = vals.get('unit_amount')
+        if timesheet_type == 'regular':
+            if unit_amount > 12:
+                raise ValidationError(_("Hours spent can not be more than 12 hours."))
+        if timesheet_type == 'overtime':
+            if unit_amount > 4:
+                raise ValidationError(_("Hours spent for Overtime can not be more than 4 hours."))
