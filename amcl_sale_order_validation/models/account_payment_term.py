@@ -20,7 +20,7 @@ class AccountPaymentTerm(models.Model):
         self.show_require_attachment = value
 
     show_require_attachment = fields.Boolean(string='Show Require Attachment', compute='set_show_require_attachment')
-    require_attachment = fields.Boolean(string='Require Attachment', default=_set_default_require_attachment, help="True when the payment term is on credit and company spceific to 'INDUSTRIAL SUPPORT SERVICES CO.'")
+    require_attachment = fields.Boolean(string='Require Attachment', default=_set_default_require_attachment, help="If Checked then the payment term is Credit term, True when the payment term is on credit and company spceific to 'INDUSTRIAL SUPPORT SERVICES CO.'")
 
     @api.onchange('company_id')
     def onchange_company(self):
