@@ -1,0 +1,63 @@
+<odoo>
+	<data>
+
+		<record id="view_order_form_other_order_line" model="ir.ui.view">
+			<field name="name">view.order.form.other.order.line</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//notebook" position="inside">
+					<page name="other_order_line" string="Other Order Lines">
+						<field name="other_order_line_ids">
+							<tree editable="bottom">
+								<field name="sequence" widget="handle" />
+								<field name="product_id"/>
+								<field name="name"/>
+								<field
+                                    name="product_uom_qty"
+                                    context="{
+                                        'partner_id': parent.partner_id,
+                                        'quantity': product_uom_qty,
+                                        'pricelist': parent.pricelist_id,
+                                        'uom': product_uom,
+                                        'company_id': parent.company_id
+                                    }"
+                                />
+                                <field name="price_unit"/>
+								<field
+                                    name="tax_id"
+                                    widget="many2many_tags"
+                                    options="{'no_create': True}"
+                                    domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id), ('country_id', '=', parent.tax_country_id)]"
+                                    context="{'active_test': True}"
+                                    optional="show"
+                                />
+                                <field name="discount" string="Disc.%" groups="product.group_discount_per_so_line" optional="show" widget="product_discount"/>
+                                <field name="price_subtotal" widget="monetary" groups="account.group_show_line_subtotals_tax_excluded"/>
+                                <field name="price_total" widget="monetary" groups="account.group_show_line_subtotals_tax_included"/>
+								<field name="order_id" invisible="1"/>
+								<field name="product_uom" invisible="1"/>
+								<field name="price_tax" invisible="1"/>
+								<field name="state" invisible="1"/>
+								<field name="company_id" invisible="1"/>
+							</tree>
+						</field>
+						<group name="other_note_group" col="6" class="mt-2 mt-md-0">
+                            <group colspan="4">
+                            	<!-- <field name="other_tax_ids" widget="many2many_tags"/> -->
+                            </group>
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_other_total">
+                            	<field name="total_other_excluding_vat"/>
+                            	<field name="total_other_vat"/>
+                            	<field name="other_total"/>
+                            </group>
+                            <div class="oe_clear"/>
+                        </group>
+					</page>
+				</xpath>
+
+			</field>
+		</record>
+
+	</data>
+</odoo>
