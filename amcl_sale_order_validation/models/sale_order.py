@@ -17,8 +17,7 @@ class SaleOrder(models.Model):
 
     need_attachment = fields.Selection(lambda self: _get_selections('attachment'),
         string='Need An Attachmenet',
-        compute='set_need_attachment',
-        default='0')
+        compute='set_need_attachment')
     payment_term_attachment = fields.Binary(string='Payment Term Attachment')
     has_an_attachment = fields.Selection(lambda self: _get_selections('attachment'),
         string='Has An Attachment',
@@ -28,7 +27,7 @@ class SaleOrder(models.Model):
     def set_need_attachment(self):
         value = '0'
         if self.payment_term_id:
-            if self.payment_term_id.name not in ['Cash', 'cash']:
+            if self.payment_term_id.require_attachment:
                 value = '1'
         self.need_attachment = value
 
@@ -38,16 +37,14 @@ class SaleOrder(models.Model):
         return res
 
     def validate_with_payment_term(self):
-        if not self.payment_term_id:
-            return True
-        if self.payment_term_id.name not in ['Cash', 'cash']:
+        if self.need_attachment == '1' and not self.payment_term_attachment:
             raise ValidationError(_('Please add Payment Term Attachment for payment term.'))
 
     @api.onchange('payment_term_attachment')
     def onchange_payment_term_attachment(self):
+        value = '0'
         if self.payment_term_attachment:
-            self.has_an_attachment = '1'
-        else:
-            self.has_an_attachment = '0'
+            value = '1'
+        self.has_an_attachment = value
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
